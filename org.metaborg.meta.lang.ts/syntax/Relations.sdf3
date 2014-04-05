@@ -1,0 +1,39 @@
+module Relations
+
+imports
+
+	common/Identifiers
+	terms/Terms
+	TypeSystemLanguage
+
+templates
+
+	ModuleSection.Relations = <
+		relations
+		
+		<Relation*; separator="\n\n">
+	>
+	
+	Relation.RelationDef = <define <RelationProperty*; separator=", "> <SubTypeOp>>
+	
+	RelationProperty.Reflexive  = <reflexive>
+	RelationProperty.Transitive = <transitive>
+	RelationProperty.Symmetric  = <symmetric>
+	
+	Relation.RelationUnCond = [
+		[Pattern] [SubTypeOp] [Pattern]
+	]
+
+	Relation.Relation = [
+		[Pattern] [SubTypeOp] [Pattern]
+		where [Formula]
+	]
+	
+  Prop.RelationStore = [store [Term] [SubTypeOp] [Term]]
+	Prop.RelationMatch  = [[Term] [SubTypeOp] [Term]]
+	// Prop.RelationLookup = [[Term] <[Id]? [Pattern]]
+
+lexical syntax
+
+  SubTypeOp = "<" Id? ":" 
+   

@@ -10,9 +10,14 @@ imports
   Vars.pp.generated
   libstratego-gpp
   Module.pp.generated
+  TypeFunctions.pp.generated
+  Signatures.pp.generated
+  PP.pp.generated
   
 strategies 
   
   pp-pattern = prettyprint-Pattern; box2text-string(|80)
   
   pp-term = prettyprint-Term; box2text-string(|80)
+
+	prettyprint-PPTerm = fail

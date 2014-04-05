@@ -9,7 +9,7 @@ module terms/Constants
     "\"" StrChar* "\""        -> String
     ~[\"\\]                   -> StrChar
     [\\] [\"tnr\\]            -> StrChar
-
+    
   sorts Char CharChar
 
   lexical syntax

@@ -1,0 +1,37 @@
+module PP.pp.generated
+
+strategies
+  prettyprint-PropPattern :
+    HasTypePat(a, b) -> [ H(
+                            [SOpt(HS(), "0")]
+                          , [a439, S(" : "), b230]
+                          )
+                        ]
+    where a439 := <pp-one-Z(prettyprint-Pattern)> a
+    where b230 := <pp-one-Z(prettyprint-Term)> b
+
+  prettyprint-PropPattern :
+    HasPat(a, b, c) -> [ H(
+                           [SOpt(HS(), "0")]
+                         , [ a440
+                           , S(" has ")
+                           , b231
+                           , S(" ")
+                           , c55
+                           ]
+                         )
+                       ]
+    where a440 := <pp-one-Z(prettyprint-Pattern)> a
+    where b231 := <pp-one-Z(prettyprint-Id)> b
+    where c55 := <pp-one-Z(prettyprint-Term)> c
+
+  prettyprint-PropPattern :
+    IsWF(a) -> [ H(
+                   [SOpt(HS(), "0")]
+                 , [a441, S(" :-")]
+                 )
+               ]
+    where a441 := <pp-one-Z(prettyprint-Pattern)> a
+
+  prettyprint-example =
+    prettyprint-PropPattern

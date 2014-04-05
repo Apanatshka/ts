@@ -1,0 +1,70 @@
+module label
+
+imports include/TypeSystemLanguage
+
+rules
+  
+  form-vars    = collect-all(?Var(_))
+  
+  form-varrefs = collect-all(?VarRef(_))
+
+rules
+
+  label-formulas =
+    alltd(TypeRule(id, label-formula) + TypeFunction(id, id, id, label-formula) + Relation(id, id, id, label-formula))
+    
+  label-formula :
+    True() -> True()
+    
+  label-formula :
+    Label(l, form) -> <label-formula> form
+    
+  label-formula :
+    And(form1, form2) -> And(form1', form2')
+    where form1' := <label-formula> form1
+        ; form2' := <label-formula> form2 
+
+  label-formula :
+    Or(form1, form2) -> Label(l, Or(form1', form2'))
+    where form1' := <label-formula> form1
+        ; form2' := <label-formula> form2   
+        ; l := <newname> "or"    
+
+  label-formula :
+    Else(form, msg, target) -> Else(<label-formula>form, msg, target)
+
+  label-formula :
+    form@Has(trm, op, Var(t)) -> Label(t, form)
+        
+  label-formula :
+    form@HasType(trm, Var(t)) -> Label(t, form)
+  
+  label-formula :
+    form@Eq(trm1, trm2) -> Label(<newname> "eq", form)
+    
+  label-formula :
+    form@Match(_, pat) -> Label(<newname> "match", form)
+    where <form-vars> pat => [] 
+
+  label-formula :
+    form@Match(pat, Var(x)) -> Label(x, form)
+    
+  label-formula :
+    form@Match(_, pat) -> form
+    where <not(?Var(_))> pat; <form-vars> pat => [_|_]
+    
+  label-formula :
+    form@Match(Union(_,_), Var(x)) -> Label(x, form)
+    
+  label-formula :
+    form@Match(Choice(_,_), Var(x)) -> Label(x, form)
+        
+  label-formula : 
+  	form@FuncAppl(n, trm, Var(x)) -> Label(x, form)
+
+	label-formula : 
+		form@RelationMatch(trm1, rel, trm2) -> Label(<newname> "relmatch", form)
+		
+	label-formula : 
+		form@RelationStore(trm1, rel, trm2) -> Label(<newname> "relstore", form)
+				
